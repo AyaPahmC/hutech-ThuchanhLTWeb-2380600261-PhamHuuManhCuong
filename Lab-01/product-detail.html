@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .detail-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .detail-info h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .detail-info .price {
+            font-size: 24px;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .detail-info .description {
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .quantity-selector {
+            margin: 20px 0;
+        }
+
+        .quantity-selector label {
+            margin-right: 10px;
+        }
+
+        .quantity-selector input {
+            width: 60px;
+            padding: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-buttons button,
+        .action-buttons a {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-buy {
+            background-color: #e74c3c;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-back {
+            background-color: #95a5a6;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-buy:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-back:hover {
+            background-color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .detail-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Chi Tiết Sản Phẩm</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang Chủ</a></li>
+            <li><a href="#">Sản Phẩm</a></li>
+            <li><a href="#">Liên Hệ</a></li>
+        </ul>
+    </nav>
+
+    <div class="detail-container">
+        <div class="detail-image">
+            <img id="productImage" src="" alt="Sản phẩm">
+        </div>
+
+        <div class="detail-info">
+            <h1 id="productName"></h1>
+            <p class="price" id="productPrice"></p>
+            <p class="description" id="productDescription"></p>
+
+            <div class="quantity-selector">
+                <label for="quantity">Số lượng:</label>
+                <input type="number" id="quantity" min="1" value="1">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-buy">Mua Ngay</button>
+                <a href="index.html" class="btn-back">Tiếp Tục Mua Sắm</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="product-detail.js"></script>
+</body>
+
+</html>
