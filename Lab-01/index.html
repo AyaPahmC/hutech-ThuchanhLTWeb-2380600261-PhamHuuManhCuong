@@ -4,76 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Web Bán Hàng</title>
+    <title>Mạnh Cường Store</title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <h1>Trang Web Bán Hàng</h1>
+        <h1>Mạnh Cường Store</h1>
+        <p
+            style="margin-top: 10px; font-size: 16px; opacity: 0.9; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.15);">
+            Thiên đường mua sắm công nghệ & phụ kiện cao cấp</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#">Trang Chủ</a></li>
-            <li><a href="#">Sản Phẩm</a></li>
-            <li><a href="#">Liên Hệ</a></li>
+            <li><a href="index.html" style="color: #4f46e5; background-color: #e0e7ff;">Trang Chủ</a></li>
+            <li><a href="products.html">Sản Phẩm</a></li>
+            <li><a href="contact.html">Liên Hệ</a></li>
+            <li><a href="admin.html">Quản Lý</a></li>
+            <li><button id="themeToggle" class="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">🌙</button></li>
         </ul>
     </nav>
-    <div class="product-list">
-        <div class="product-card">
-            <a href="product-detail.html?id=1">
-                <img src="https://picsum.photos/id/684/600/400" alt="">
-                <h2>Sản Phẩm 1</h2>
-                <p>Mô tả sản phẩm 1.</p>
-                <p>Giá: $100</p>
-                <button class="button button4">Mua Ngay</button>
-            </a>
+
+    <!-- ====== HERO BANNER ====== -->
+    <div class="hero-banner">
+        <!-- Vòng tròn trang trí nền -->
+        <div class="hero-ring"></div>
+        <div class="hero-ring"></div>
+        <div class="hero-ring"></div>
+
+        <!-- Nội dung trái -->
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                🔥 Flash Sale – Giảm đến 50%
+            </div>
+
+            <h2 class="hero-title">
+                Mua Sắm Thả Ga<br>
+                Tại <span class="highlight">Mạnh Cường Store</span>
+            </h2>
+
+            <p class="hero-subtitle">
+                Hàng ngàn sản phẩm công nghệ & phụ kiện cao cấp, chính hãng 100%.
+                Giao hàng nhanh toàn quốc, đổi trả dễ dàng trong 30 ngày.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="products.html" class="btn-hero-primary">🛒 Mua Sắm Ngay</a>
+                <a href="contact.html" class="btn-hero-secondary">💬 Liên Hệ Tư Vấn</a>
+            </div>
+
+            <!-- Số liệu thống kê -->
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <strong>500+</strong>
+                    <span>Sản phẩm</span>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat-item">
+                    <strong>10K+</strong>
+                    <span>Khách hàng</span>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat-item">
+                    <strong>99%</strong>
+                    <span>Hài lòng</span>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat-item">
+                    <strong>24/7</strong>
+                    <span>Hỗ trợ</span>
+                </div>
+            </div>
         </div>
 
-        <div class="product-card">
-            <a href="product-detail.html?id=2">
-                <img src="https://picsum.photos/id/1025/600/400" alt="">
-                <h2>Sản Phẩm 2</h2>
-                <p>Mô tả sản phẩm 2.</p>
-                <p>Giá: $150</p>
-                <button class="button button4">Mua Ngay</button>
-            </a>
-        </div>
-
-        <div class="product-card">
-            <a href="product-detail.html?id=3">
-                <img src="https://picsum.photos/id/1060/600/400" alt="">
-                <h2>Sản Phẩm 3</h2>
-                <p>Mô tả sản phẩm 3.</p>
-                <p>Giá: $120</p>
-                <button class="button button4">Mua Ngay</button>
-            </a>
-        </div>
-
-        <div class="product-card">
-            <a href="product-detail.html?id=4">
-                <img src="https://picsum.photos/id/30/600/400" alt="">
-                <h2>Sản Phẩm 4</h2>
-                <p>Mô tả sản phẩm 4.</p>
-                <p>Giá: $80</p>
-                <button class="button button4">Mua Ngay</button>
-            </a>
-        </div>
-
-        <div class="product-card">
-            <a href="product-detail.html?id=5">
-                <img src="https://picsum.photos/id/431/600/400" alt="">
-                <h2>Sản Phẩm 5</h2>
-                <p>Mô tả sản phẩm 5.</p>
-                <p>Giá: $200</p>
-                <button class="button button4">Mua Ngay</button>
-            </a>
+        <!-- Ảnh minh hoạ bên phải -->
+        <div class="hero-image-wrap">
+            <img src="https://picsum.photos/id/3/800/500" alt="Banner sản phẩm Mạnh Cường Store">
         </div>
     </div>
-    <!----sidebar-->
+
+    <!-- Khu vực Danh sách sản phẩm mua sắm (Cột 1) -->
+    <div class="product-list" id="productList">
+        <!-- Sản phẩm sẽ được hiển thị động từ index.js -->
+    </div>
+
+
+    <!-- Sidebar trang chủ (Cột 2) -->
     <div class="sidebar">
-        <!----hiển thị thanh sidebar ở phía dưới sản phẩm di động-->
+        <h3>🔗 Mạng Xã Hội</h3>
         <div class="social-icons">
             <a href="#">Facebook</a>
             <a href="#">Twitter</a>
@@ -81,11 +106,13 @@
             <a href="#">LinkedIn</a>
         </div>
     </div>
-    <!--footer-->
+
+    <!-- Footer -->
     <div class="footer">
         <div class="footer-item">
             <h3>Về Chúng Tôi</h3>
-            <p><strong>Trang Web Bán Hàng</strong> chuyên cung cấp các sản phẩm chất lượng cao, uy tín hàng đầu Việt Nam.</p>
+            <p><strong>Mạnh Cường Store</strong> chuyên cung cấp các sản phẩm chất lượng cao, uy tín hàng đầu Việt Nam.
+            </p>
             <p>📍 Địa chỉ: 123 Đường ABC, Quận 1, TP. HCM</p>
             <p>📞 Hotline: 1900 xxxx</p>
         </div>
@@ -101,7 +128,13 @@
         <div class="footer-item">
             <h3>Hỗ Trợ</h3>
             <p>⏱ Giờ làm việc: 8:00 – 22:00 (Kể cả CN)</p>
-            <p>📧 Email: hotro@webbanhang.com</p>
+            <p>📧 Email: hotro@manhcuongstore.com</p>
             <p>💬 Chat trực tuyến với nhân viên tư vấn để được hỗ trợ nhanh nhất.</p>
         </div>
     </div>
+
+    <!-- Script điều khiển chính của trang bán hàng -->
+    <script src="index.js"></script>
+</body>
+
+</html>

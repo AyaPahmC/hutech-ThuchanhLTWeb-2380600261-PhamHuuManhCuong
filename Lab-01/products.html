@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạnh Cường Store – Sản Phẩm</title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- Styles riêng cho trang Sản Phẩm --- */
+        .products-page-wrapper {
+            grid-column: 1 / span 2;
+            padding: 10px 20px 40px;
+        }
+
+        .products-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 1.5px solid var(--border-input);
+            border-radius: 10px;
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .filter-select {
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-input);
+            border-radius: 10px;
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .products-count {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .no-results {
+            grid-column: 1 / span 3;
+            text-align: center;
+            padding: 60px 20px;
+            background-color: var(--bg-card);
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-page-wrapper {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Mạnh Cường Store</h1>
+        <p style="margin-top:10px;font-size:16px;opacity:.9;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.15);">
+            Thiên đường mua sắm công nghệ & phụ kiện cao cấp</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang Chủ</a></li>
+            <li><a href="products.html" style="color:#4f46e5;background-color:#e0e7ff;">Sản Phẩm</a></li>
+            <li><a href="contact.html">Liên Hệ</a></li>
+            <li><a href="admin.html">Quản Lý</a></li>
+            <li><button id="themeToggle" class="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">🌙</button></li>
+        </ul>
+    </nav>
+
+    <!-- Nội dung chính -->
+    <div class="products-page-wrapper">
+        <!-- Thanh tìm kiếm & lọc -->
+        <div class="products-toolbar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+            </div>
+            <select id="sortSelect" class="filter-select">
+                <option value="default">Sắp xếp mặc định</option>
+                <option value="price-asc">Giá tăng dần</option>
+                <option value="price-desc">Giá giảm dần</option>
+                <option value="name-asc">Tên A → Z</option>
+                <option value="name-desc">Tên Z → A</option>
+            </select>
+            <span class="products-count" id="productsCount">0 sản phẩm</span>
+        </div>
+
+        <!-- Lưới sản phẩm -->
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- Footer (full width) -->
+    <div class="footer">
+        <div class="footer-item">
+            <h3>Về Chúng Tôi</h3>
+            <p><strong>Mạnh Cường Store</strong> chuyên cung cấp các sản phẩm chất lượng cao, uy tín hàng đầu Việt Nam.
+            </p>
+            <p>📍 Địa chỉ: 123 Đường ABC, Quận 1, TP. HCM</p>
+            <p>📞 Hotline: 1900 xxxx</p>
+        </div>
+        <div class="footer-item">
+            <h3>Chính Sách</h3>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Chính sách bảo hành</a></p>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Chính sách đổi trả 1-1</a></p>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Chính sách vận chuyển</a></p>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Hướng dẫn thanh toán</a></p>
+        </div>
+        <div class="footer-item">
+            <h3>Hỗ Trợ</h3>
+            <p>⏱ Giờ làm việc: 8:00 – 22:00 (Kể cả CN)</p>
+            <p>📧 Email: hotro@manhcuongstore.com</p>
+            <p>💬 Chat trực tuyến với nhân viên tư vấn để được hỗ trợ nhanh nhất.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Khởi tạo dữ liệu ---
+        const defaultProducts = [
+            { id: 1, name: "Sản Phẩm 1", image: "https://picsum.photos/id/684/600/400", price: "$100", description: "Đây là mô tả chi tiết về sản phẩm 1. Sản phẩm này có chất lượng cao, bền bỉ và được làm từ các vật liệu tốt nhất." },
+            { id: 2, name: "Sản Phẩm 2", image: "https://picsum.photos/id/1025/600/400", price: "$150", description: "Đây là mô tả chi tiết về sản phẩm 2. Sản phẩm này được thiết kế hiện đại, dễ sử dụng và có nhiều tính năng hữu ích." },
+            { id: 3, name: "Sản Phẩm 3", image: "https://picsum.photos/id/1060/600/400", price: "$120", description: "Đây là mô tả chi tiết về sản phẩm 3. Sản phẩm này được kiểm chứng về chất lượng và độ an toàn." },
+            { id: 4, name: "Sản Phẩm 4", image: "https://picsum.photos/id/30/600/400", price: "$80", description: "Đây là mô tả chi tiết về sản phẩm 4. Sản phẩm này giá rẻ nhưng chất lượng không kém." },
+            { id: 5, name: "Sản Phẩm 5", image: "https://picsum.photos/id/431/600/400", price: "$200", description: "Đây là mô tả chi tiết về sản phẩm 5. Sản phẩm này là hàng cao cấp với thiết kế sang trọng." }
+        ];
+        if (!localStorage.getItem('products')) {
+            localStorage.setItem('products', JSON.stringify(defaultProducts));
+        }
+
+        function getProducts() {
+            return JSON.parse(localStorage.getItem('products')) || [];
+        }
+
+        function getPriceValue(priceStr) {
+            return parseFloat(priceStr.replace('$', '').replace(',', '')) || 0;
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('productsGrid');
+            const countEl = document.getElementById('productsCount');
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const sort = document.getElementById('sortSelect').value;
+
+            let products = getProducts().filter(p =>
+                p.name.toLowerCase().includes(query) ||
+                p.description.toLowerCase().includes(query)
+            );
+
+            // Sắp xếp
+            if (sort === 'price-asc') products.sort((a, b) => getPriceValue(a.price) - getPriceValue(b.price));
+            if (sort === 'price-desc') products.sort((a, b) => getPriceValue(b.price) - getPriceValue(a.price));
+            if (sort === 'name-asc') products.sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+            if (sort === 'name-desc') products.sort((a, b) => b.name.localeCompare(a.name, 'vi'));
+
+            countEl.textContent = `${products.length} sản phẩm`;
+            grid.innerHTML = '';
+
+            if (products.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <p style="font-size:28px;margin-bottom:10px;">🔍</p>
+                        <p style="font-size:16px;font-weight:700;color:var(--text-main);margin-bottom:6px;">Không tìm thấy sản phẩm nào</p>
+                        <p style="font-size:13.5px;color:var(--text-muted);">Thử từ khóa khác hoặc xóa bộ lọc.</p>
+                    </div>`;
+                return;
+            }
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <a href="product-detail.html?id=${product.id}">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p class="product-desc-short">${product.description.substring(0, 50)}...</p>
+                        <p class="product-price-tag">Giá: ${product.price}</p>
+                        <button class="button button4">Mua Ngay</button>
+                    </a>`;
+                grid.appendChild(card);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', renderGrid);
+        document.getElementById('sortSelect').addEventListener('change', renderGrid);
+
+        // Dark mode
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            const isDark = document.documentElement.classList.contains('dark-theme');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+
+</html>

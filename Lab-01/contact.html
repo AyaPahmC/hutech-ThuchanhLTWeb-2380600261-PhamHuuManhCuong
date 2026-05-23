@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạnh Cường Store – Liên Hệ</title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* -------- Styles riêng cho trang Liên Hệ -------- */
+        .contact-wrapper {
+            grid-column: 1 / span 2;
+            padding: 10px 20px 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- Hero banner liên hệ --- */
+        .contact-hero {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border-radius: 20px;
+            padding: 44px 40px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.30);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.10) 0%, transparent 60%);
+        }
+
+        .contact-hero h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .contact-hero p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* --- Grid thông tin + form --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* --- Thẻ thông tin liên hệ --- */
+        .info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .info-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+        }
+
+        .info-card-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .info-card-body h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .info-card-body p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* --- Form liên hệ --- */
+        .contact-form-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 30px 28px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .contact-form-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 22px;
+        }
+
+        .contact-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .contact-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .contact-form-group.full-width {
+            grid-column: 1 / span 2;
+        }
+
+        .contact-form-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .contact-form-group input,
+        .contact-form-group textarea,
+        .contact-form-group select {
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-input);
+            border-radius: 10px;
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            resize: vertical;
+        }
+
+        .contact-form-group input:focus,
+        .contact-form-group textarea:focus,
+        .contact-form-group select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .btn-send {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+            margin-top: 4px;
+        }
+
+        .btn-send:hover {
+            background: linear-gradient(135deg, #4338ca, #4f46e5);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-send:active {
+            transform: translateY(0);
+        }
+
+        /* --- Thông báo gửi thành công --- */
+        .success-toast {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            background: #d1fae5;
+            border: 1.5px solid #6ee7b7;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 16px;
+            color: #064e3b;
+            font-size: 14px;
+            font-weight: 600;
+            animation: slideInToast 0.35s ease;
+        }
+
+        .success-toast.show {
+            display: flex;
+        }
+
+        @keyframes slideInToast {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Map placeholder --- */
+        .map-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .map-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .map-embed {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0f9ff 100%);
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #4f46e5;
+            font-size: 14px;
+            font-weight: 600;
+            gap: 10px;
+        }
+
+        .dark-theme .map-embed {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            color: #a5b4fc;
+        }
+
+        /* Responsive */
+        @media (max-width: 820px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form-group.full-width {
+                grid-column: 1;
+            }
+
+            .contact-wrapper {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Mạnh Cường Store</h1>
+        <p style="margin-top:10px;font-size:16px;opacity:.9;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.15);">
+            Thiên đường mua sắm công nghệ & phụ kiện cao cấp</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang Chủ</a></li>
+            <li><a href="products.html">Sản Phẩm</a></li>
+            <li><a href="contact.html" style="color:#4f46e5;background-color:#e0e7ff;">Liên Hệ</a></li>
+            <li><a href="admin.html">Quản Lý</a></li>
+            <li><button id="themeToggle" class="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">🌙</button></li>
+        </ul>
+    </nav>
+
+    <div class="contact-wrapper">
+
+        <!-- Hero -->
+        <div class="contact-hero">
+            <h2>📬 Liên Hệ Với Chúng Tôi</h2>
+            <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7. Hãy gửi tin nhắn và nhận phản hồi trong vòng 30 phút!</p>
+        </div>
+
+        <!-- Grid thông tin + form -->
+        <div class="contact-grid">
+
+            <!-- Thẻ thông tin -->
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">📍</div>
+                    <div class="info-card-body">
+                        <h4>Địa Chỉ</h4>
+                        <p>123 Đường ABC, Phường XYZ<br>Quận 1, TP. Hồ Chí Minh</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">📞</div>
+                    <div class="info-card-body">
+                        <h4>Hotline</h4>
+                        <p>1900 xxxx (miễn phí)<br>Thứ 2 – CN · 8:00 – 22:00</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">📧</div>
+                    <div class="info-card-body">
+                        <h4>Email</h4>
+                        <p>hotro@manhcuongstore.com<br>kinhdoanh@manhcuongstore.com</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">💬</div>
+                    <div class="info-card-body">
+                        <h4>Mạng Xã Hội</h4>
+                        <p>Facebook · Instagram · Zalo OA<br>Phản hồi trong vòng 5 phút</p>
+                    </div>
+                </div>
+
+                <!-- Map placeholder -->
+                <div class="map-card">
+                    <div class="map-header">🗺️ Bản Đồ Cửa Hàng</div>
+                    <div class="map-embed">
+                        <span style="font-size:36px;">📌</span>
+                        <span>123 Đường ABC, Quận 1, TP.HCM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form liên hệ -->
+            <div class="contact-form-card">
+                <h3>✍️ Gửi Tin Nhắn Cho Chúng Tôi</h3>
+                <form id="contactForm">
+                    <div class="contact-form-grid">
+                        <div class="contact-form-group">
+                            <label for="contactName">Họ và tên *</label>
+                            <input type="text" id="contactName" required placeholder="Nguyễn Văn A">
+                        </div>
+                        <div class="contact-form-group">
+                            <label for="contactPhone">Số điện thoại</label>
+                            <input type="tel" id="contactPhone" placeholder="0909 xxx xxx">
+                        </div>
+                        <div class="contact-form-group full-width">
+                            <label for="contactEmail">Email *</label>
+                            <input type="email" id="contactEmail" required placeholder="email@example.com">
+                        </div>
+                        <div class="contact-form-group full-width">
+                            <label for="contactTopic">Chủ đề</label>
+                            <select id="contactTopic">
+                                <option value="">-- Chọn chủ đề --</option>
+                                <option value="order">Hỏi về đơn hàng</option>
+                                <option value="product">Tư vấn sản phẩm</option>
+                                <option value="warranty">Bảo hành / đổi trả</option>
+                                <option value="payment">Thanh toán</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="contact-form-group full-width">
+                            <label for="contactMessage">Nội dung tin nhắn *</label>
+                            <textarea id="contactMessage" rows="5" required
+                                placeholder="Nhập nội dung bạn muốn gửi đến chúng tôi..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-send">🚀 Gửi Tin Nhắn</button>
+
+                    <div class="success-toast" id="successToast">
+                        ✅ Tin nhắn đã được gửi thành công! Chúng tôi sẽ phản hồi bạn trong vòng 30 phút.
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-item">
+            <h3>Về Chúng Tôi</h3>
+            <p><strong>Mạnh Cường Store</strong> chuyên cung cấp các sản phẩm chất lượng cao, uy tín hàng đầu Việt Nam.
+            </p>
+            <p>📍 Địa chỉ: 123 Đường ABC, Quận 1, TP. HCM</p>
+            <p>📞 Hotline: 1900 xxxx</p>
+        </div>
+        <div class="footer-item">
+            <h3>Chính Sách</h3>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Chính sách bảo hành</a></p>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Chính sách đổi trả 1-1</a></p>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Chính sách vận chuyển</a></p>
+            <p><a href="#" style="color:#ccc;text-decoration:none;">• Hướng dẫn thanh toán</a></p>
+        </div>
+        <div class="footer-item">
+            <h3>Hỗ Trợ</h3>
+            <p>⏱ Giờ làm việc: 8:00 – 22:00 (Kể cả CN)</p>
+            <p>📧 Email: hotro@manhcuongstore.com</p>
+            <p>💬 Chat trực tuyến với nhân viên tư vấn để được hỗ trợ nhanh nhất.</p>
+        </div>
+    </div>
+
+    <script>
+        // Gửi form liên hệ (giả lập)
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const toast = document.getElementById('successToast');
+            toast.classList.add('show');
+            this.reset();
+            setTimeout(() => toast.classList.remove('show'), 5000);
+        });
+
+        // Dark mode
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            themeToggle.textContent = document.documentElement.classList.contains('dark-theme') ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạnh Cường Store - Quản Lý Sản Phẩm</title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Mạnh Cường Store</h1>
+        <p
+            style="margin-top: 10px; font-size: 16px; opacity: 0.9; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.15);">
+            Thiên đường mua sắm công nghệ & phụ kiện cao cấp</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang Chủ</a></li>
+            <li><a href="products.html">Sản Phẩm</a></li>
+            <li><a href="contact.html">Liên Hệ</a></li>
+            <li><a href="admin.html" style="color: #4f46e5; background-color: #e0e7ff;">Quản Lý</a></li>
+            <li><button id="themeToggle" class="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">🌙</button></li>
+        </ul>
+    </nav>
+
+    <!-- Khu vực Admin Dashboard chính (Cột 1) -->
+    <div class="admin-dashboard">
+        <div class="admin-header-actions">
+            <h2>🛠️ Bảng Quản Trị Sản Phẩm</h2>
+            <div class="admin-control-buttons">
+                <button id="btnAddProduct" class="btn-action btn-add-custom">✨ Thêm sản phẩm mới</button>
+                <button id="btnAddRow" class="btn-action btn-add-row">🚀 Sinh nhanh 3 hàng mẫu</button>
+            </div>
+        </div>
+
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hình Ảnh</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Giá Cả</th>
+                        <th>Mô Tả Ngắn</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="adminProductTableBody">
+                    <!-- Sản phẩm sẽ được render động từ admin.js -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Sidebar Quản Trị (Cột 2) -->
+    <div class="sidebar">
+        <h3>ℹ️ Bảng Điều Khiển</h3>
+        <div style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">
+            <p style="margin-bottom: 12px;">Chào mừng bạn đến với trang quản trị sản phẩm của <strong>Mạnh Cường
+                    Store</strong>.</p>
+            <p style="margin-bottom: 12px;">Tại đây bạn có thể:</p>
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>Thêm các sản phẩm mới tùy chỉnh</li>
+                <li>Tải ảnh trực tiếp từ máy tính lên</li>
+                <li>Chỉnh sửa giá cả, thông tin sản phẩm</li>
+                <li>Xóa bỏ các sản phẩm đã hết hàng</li>
+            </ul>
+            <p>Hệ thống tự động đồng bộ dữ liệu qua <strong>localStorage</strong> đến trang chủ và trang chi tiết sản
+                phẩm.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-item">
+            <h3>Về Chúng Tôi</h3>
+            <p><strong>Mạnh Cường Store</strong> chuyên cung cấp các sản phẩm chất lượng cao, uy tín hàng đầu Việt Nam.
+            </p>
+            <p>📍 Địa chỉ: 123 Đường ABC, Quận 1, TP. HCM</p>
+            <p>📞 Hotline: 1900 xxxx</p>
+        </div>
+
+        <div class="footer-item">
+            <h3>Chính Sách</h3>
+            <p><a href="#" style="color: #ccc; text-decoration: none;">• Chính sách bảo hành</a></p>
+            <p><a href="#" style="color: #ccc; text-decoration: none;">• Chính sách đổi trả 1-1</a></p>
+            <p><a href="#" style="color: #ccc; text-decoration: none;">• Chính sách vận chuyển</a></p>
+            <p><a href="#" style="color: #ccc; text-decoration: none;">• Hướng dẫn thanh toán</a></p>
+        </div>
+
+        <div class="footer-item">
+            <h3>Hỗ Trợ</h3>
+            <p>⏱ Giờ làm việc: 8:00 – 22:00 (Kể cả CN)</p>
+            <p>📧 Email: hotro@manhcuongstore.com</p>
+            <p>💬 Chat trực tuyến với nhân viên tư vấn để được hỗ trợ nhanh nhất.</p>
+        </div>
+    </div>
+
+    <!-- Modal Form Thêm/Chỉnh Sửa Sản Phẩm (Dùng chung cho cả 2 hành động Add & Edit) -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span id="btnCloseModal" class="close-btn">&times;</span>
+            <h2 id="modalTitle">✏️ Thêm Sản Phẩm Mới</h2>
+            <form id="addProductForm">
+                <!-- Input ẩn để lưu ID khi sửa sản phẩm -->
+                <input type="hidden" id="editProductId" value="">
+
+                <div class="form-group">
+                    <label for="prodName">Tên sản phẩm *</label>
+                    <input type="text" id="prodName" required placeholder="Nhập tên sản phẩm...">
+                </div>
+                <div class="form-group">
+                    <label for="prodPrice">Giá sản phẩm *</label>
+                    <input type="text" id="prodPrice" required placeholder="Ví dụ: $120 hoặc 120">
+                </div>
+                <div class="form-group">
+                    <label>Hình ảnh sản phẩm (Tải lên hoặc URL)</label>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <input type="file" id="prodImageFile" accept="image/png, image/jpeg, image/gif, image/webp"
+                            style="padding: 6px; font-size: 13px;">
+                        <span
+                            style="text-align: center; color: #777; font-size: 11px; font-weight: bold; margin: 2px 0;">-
+                            HOẶC -</span>
+                        <input type="url" id="prodImage" placeholder="Dán link ảnh online (URL)...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="prodDesc">Mô tả chi tiết sản phẩm *</label>
+                    <textarea id="prodDesc" rows="4" required placeholder="Nhập mô tả chi tiết sản phẩm..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="btnCancel" class="btn-secondary">Hủy</button>
+                    <button type="submit" id="btnSubmitForm" class="btn-primary">Lưu sản phẩm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script điều khiển chức năng quản trị -->
+    <script src="admin.js"></script>
+</body>
+
+</html>
